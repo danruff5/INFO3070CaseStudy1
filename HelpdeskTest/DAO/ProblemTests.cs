@@ -11,7 +11,7 @@ namespace HelpdeskTest
         public void ProblemDAOUpdateShouldReturnTrue()
         {
             ProblemDAO dao = new ProblemDAO();
-            Problem prb = dao.GetByID("561ede62f748f236d0200411"); // Device not pluged in ID
+            Problem prb = dao.GetByID("56201441f748f20bb0a36156"); // Device not pluged in ID
             prb.Description = "DEVICE NOT PLUGED IN";
             int rowsUpdated = dao.Update(prb);
 
@@ -23,8 +23,8 @@ namespace HelpdeskTest
         {
             ProblemDAO dao = new ProblemDAO();
 
-            Problem prb1 = dao.GetByID("561ede62f748f236d0200411");
-            Problem prb2 = dao.GetByID("561ede62f748f236d0200411");
+            Problem prb1 = dao.GetByID("56201441f748f20bb0a36156");
+            Problem prb2 = dao.GetByID("56201441f748f20bb0a36156");
 
             prb1.Description = "DEVICE NOT PLUGGED IN";
             int rowsUp = dao.Update(prb1);

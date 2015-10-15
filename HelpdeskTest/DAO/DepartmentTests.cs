@@ -13,7 +13,7 @@ namespace HelpdeskTest
         public void DepartmentDAOUpdateShouldReturnTrue()
         {
             DepartmentDAO dao = new DepartmentDAO();
-            Department dep = dao.GetByID("561ede62f748f236d0200403"); // Sales ID
+            Department dep = dao.GetByID("56201441f748f20bb0a36148"); // Sales ID
             dep.DepartmentName = "SALES";
             int rowsUpdated = dao.Update(dep);
 
@@ -25,8 +25,8 @@ namespace HelpdeskTest
         {
             DepartmentDAO dao = new DepartmentDAO();
 
-            Department dep1 = dao.GetByID("561ede62f748f236d0200403");
-            Department dep2 = dao.GetByID("561ede62f748f236d0200403");
+            Department dep1 = dao.GetByID("56201441f748f20bb0a36148"); // Sales Id
+            Department dep2 = dao.GetByID("56201441f748f20bb0a36148");
 
             dep1.DepartmentName = "SALES";
             int rowsUp = dao.Update(dep1);

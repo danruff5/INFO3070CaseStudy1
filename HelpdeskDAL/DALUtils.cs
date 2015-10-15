@@ -26,7 +26,7 @@ namespace HelpdeskDAL
                     + ", inner execption message = " 
                     + e.InnerException.Message
                 );
-                //throw e.InnerException;
+                throw e.InnerException;
             } else
             {
                 Trace.WriteLine("Error in DAL, object = "
@@ -36,7 +36,7 @@ namespace HelpdeskDAL
                     + ", message = "
                     + e.Message
                 );
-                //throw e;
+                throw e;
             }
         }
 

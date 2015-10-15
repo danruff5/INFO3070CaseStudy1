@@ -12,7 +12,7 @@ namespace HelpdeskTest
         public void EmployeeDAOUpdateShouldReturnTrue()
         {
             EmployeeDAO dao = new EmployeeDAO();
-            Employee emp = dao.GetByID("561ede62f748f236d0200407"); // Smartypants ID
+            Employee emp = dao.GetByID("56201441f748f20bb0a3614c"); // Smartypants ID
             emp.Phoneno = "555-555-5551";
             int rowsUpdated = dao.Update(emp);
 
@@ -24,8 +24,8 @@ namespace HelpdeskTest
         {
             EmployeeDAO dao = new EmployeeDAO();
 
-            Employee emp1 = dao.GetByID("561ede62f748f236d0200407");
-            Employee emp2 = dao.GetByID("561ede62f748f236d0200407");
+            Employee emp1 = dao.GetByID("56201441f748f20bb0a3614c"); // Smartypants Id
+            Employee emp2 = dao.GetByID("56201441f748f20bb0a3614c");
 
             emp1.Phoneno = "555-555-5551";
             int rowsUp = dao.Update(emp1);
@@ -52,7 +52,7 @@ namespace HelpdeskTest
             Employee emp = new Employee();
             EmployeeDAO dao = new EmployeeDAO();
 
-            emp.DepartmentId = new ObjectId("561ede62f748f236d0200403"); // Sales ID
+            emp.DepartmentId = new ObjectId("56201441f748f20bb0a36148"); // Sales ID
             emp.Email = "zippo@nothing.com";
             emp.Firstname = "Some";
             emp.Lastname = "Employee";

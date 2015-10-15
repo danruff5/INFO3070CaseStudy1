@@ -78,7 +78,6 @@ namespace HelpdeskDAL
             catch (MongoConcurrencyException ex)
             {
                 update = -2;
-                DALUtils.ErrorRoutine(ex, "DepartmentDAO", "Update:Concurrency");
             }
             catch (Exception ex)
             {

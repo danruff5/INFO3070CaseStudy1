@@ -62,16 +62,23 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="DepartmentTests.cs" />
-    <Compile Include="ProblemTests.cs" />
-    <Compile Include="EmployeeTests.cs" />
+    <Compile Include="DAO\DepartmentTests.cs" />
+    <Compile Include="ViewModel\DepartmentViewModelTests.cs" />
+    <Compile Include="ViewModel\ProblemViewModelTests.cs" />
+    <Compile Include="ViewModel\EmployeeViewModelTests.cs" />
+    <Compile Include="DAO\ProblemTests.cs" />
+    <Compile Include="DAO\EmployeeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResetTests.cs" />
+    <Compile Include="DAO\ResetTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HelpdeskDAL\HelpdeskDAL.csproj">
       <Project>{6f1719eb-d5da-4985-8a66-26f086da757c}</Project>
       <Name>HelpdeskDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HelpdeskViewModels\HelpdeskViewModels.csproj">
+      <Project>{5e819831-53b6-4898-a99c-d61d441e2469}</Project>
+      <Name>HelpdeskViewModels</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
