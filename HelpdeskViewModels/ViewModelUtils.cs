@@ -68,7 +68,7 @@ namespace HelpdeskViewModels
                     + ", inner execption message = "
                     + e.InnerException.Message
                 );
-                //throw e.InnerException;
+                throw e.InnerException;
             }
             else
             {
@@ -79,7 +79,7 @@ namespace HelpdeskViewModels
                     + ", message = "
                     + e.Message
                 );
-                //throw e;
+                throw e;
             }
         }
     }

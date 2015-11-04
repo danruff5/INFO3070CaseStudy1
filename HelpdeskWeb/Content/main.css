@@ -1,0 +1,28 @@
+﻿.rowWhite:hover, .rowLightGrey:hover {
+    background-color: darkgray;
+    color: #FFF;
+}
+
+.rowLightGrey {
+    background-color: lightgray;
+    color: black;
+    font-weight: normal;
+}
+
+.modal-body div:nth-child(odd) {
+    position: relative;
+    top: 6px;
+    left: 20px;
+}
+
+section {
+    padding-top: 56px;
+}
+
+#EmployePanel {
+    margin: auto 0;
+}
+
+body {
+    background-image: url("Img/retina_wood.png");
+}

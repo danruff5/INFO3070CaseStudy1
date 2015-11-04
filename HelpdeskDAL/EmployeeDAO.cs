@@ -38,9 +38,7 @@ namespace HelpdeskDAL
             try
             {
                 _ctx = new DbContext();
-                var employees = _ctx.Employees;
-                var employee = employees.AsQueryable<Employee>().Where(emp => emp._id == ID).FirstOrDefault();
-                retEmp = (Employee)employee;
+                retEmp = _ctx.Employees.FirstOrDefault(e => e._id == ID);
             }
             catch (Exception ex)
             {

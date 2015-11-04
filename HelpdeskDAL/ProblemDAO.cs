@@ -38,9 +38,7 @@ namespace HelpdeskDAL
             try
             {
                 _ctx = new DbContext();
-                var problems = _ctx.Problems;
-                var problem = problems.AsQueryable<Problem>().Where(prb => prb._id == ID).FirstOrDefault();
-                retPrb = (Problem)problem;
+                retPrb = _ctx.Problems.FirstOrDefault(p => p._id == ID);
             }
             catch (Exception ex)
             {

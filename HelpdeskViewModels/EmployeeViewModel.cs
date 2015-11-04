@@ -15,7 +15,6 @@ namespace HelpdeskViewModels
         public string Email { get; set; }
         public string Phoneno { get; set; }
         public string Entity64 { get; set; }
-        public string EmployeeId { get; set; }
         public string DepartmentId { get; set; }
 
         public EmployeeViewModel()
