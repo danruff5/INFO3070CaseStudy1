@@ -26,3 +26,17 @@ section {
 body {
     background-image: url("Img/retina_wood.png");
 }
+
+div.error {
+    position: relative;
+    top: 0 !important;
+    left: 0 !important;
+    background-color: #F3E6E6;
+    border: 2px solid #924949;
+    text-align: center;
+}
+
+.btn {
+    background-color: black;
+    color: white;
+}
