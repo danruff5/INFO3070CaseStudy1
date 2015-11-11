@@ -44,7 +44,7 @@ namespace HelpdeskWeb.Controllers
                 EmployeeViewModel emp = new EmployeeViewModel();
                 emp.GetById(id);
                 if (emp.Delete())
-                    return Ok();
+                    return Ok("Employee Deleted");
                 else
                     return BadRequest("Could not delete");
             }
