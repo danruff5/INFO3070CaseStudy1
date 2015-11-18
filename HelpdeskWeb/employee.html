@@ -70,11 +70,23 @@
                                 <div class="col-xs-7">
                                     <select name="ddlDepts" class="form-control ddl" id="ddlDepts"></select>
                                 </div>
+                                <div class="text-right col-xs-4">Is Tech:</div>
+                                <div class="col-xs-7">
+                                    <input type="checkbox" name="isTech" class="form-control" id="isTechCheck" />
+                                </div>
+                                <div class="text-right col-xs-4">Staff Pic:</div>
+                                <div class="col-xs-7">
+                                    <div id="ImageHolder" class="col-xs-3"></div>
+                                </div>
                                 <input type="hidden" id="HiddenId" />
                                 <input type="hidden" id="HiddenEntity" />
+                                <input type="hidden" id="HiddenStaffPicture64" />
                             </div>
                             <div class="modal-footer">
-                                <div id="message2" style="float: left; width: 200px; padding: 6px 0; text-align: center;"></div>
+                                <div class="col-xs-5">
+                                    <input id="fileUpload" type="file" />
+                                </div>
+                                <div id="message2" style="float: left; width: 150px; padding: 6px 0; text-align: center;"></div>
                                 <input type="submit" id="ButtonAction" class="btn" />
                                 <input type="submit" id="ButtonDelete" class="btn" value="Delete" />
                             </div>

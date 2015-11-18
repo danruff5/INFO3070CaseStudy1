@@ -16,6 +16,8 @@ namespace HelpdeskViewModels
         public string Phoneno { get; set; }
         public string Entity64 { get; set; }
         public string DepartmentId { get; set; }
+        public string StaffPicture64 { get; set; }
+        public bool IsTech { get; set; }
 
         public EmployeeViewModel()
         { 
@@ -34,6 +36,8 @@ namespace HelpdeskViewModels
                 Phoneno = emp.Phoneno;
                 Email = emp.Email;
                 DepartmentId = emp.DepartmentId.ToString();
+                StaffPicture64 = emp.StaffPicture64;
+                IsTech = emp.IsTech;
                 Entity64 = Convert.ToBase64String(Serializer(emp));
             } catch (Exception ex)
             {
@@ -55,6 +59,8 @@ namespace HelpdeskViewModels
                 emp.Phoneno = Phoneno;
                 emp.Email = Email;
                 emp.DepartmentId = new ObjectId(DepartmentId);
+                emp.StaffPicture64 = StaffPicture64;
+                emp.IsTech = IsTech;
                 rowUp = _dao.Update(emp);
             } catch (Exception ex)
             {
@@ -74,6 +80,8 @@ namespace HelpdeskViewModels
                 emp.Lastname = Lastname;
                 emp.Phoneno = Phoneno;
                 emp.Email = Email;
+                emp.StaffPicture64 = StaffPicture64;
+                emp.IsTech = IsTech;
                 Id = _dao.Create(emp);
             } catch (Exception ex)
             {

@@ -34,6 +34,7 @@
             $("#lastnameTextbox").val("");
             $("#phoneTextbox").val("");
             $("#emailTextbox").val("");
+            // TODO: Make the default picture.... From default user in database???
             $("#ButtonUpdate").prop("value", "Add");
             $("#ButtonDelete").hide();
             loadDepartmentDDL(-1);
@@ -63,56 +64,21 @@
         if ($("#EmployeeForm").valid()) {
             $("#message2").text("Data Validated by jQuery!");
             $("#message2").css({ "color": "green" });
-        
 
-            if ($("#ButtonAction").val() === "Update") {
-                // Update
-                emp = new Object();
-                emp.Id = $("#HiddenId").val();
-                emp.Entity64 = $("#HiddenEntity").val();
-                emp.Title = $("#titleTextbox").val();
-                emp.Firstname = $("#firstnameTextbox").val();
-                emp.Lastname = $("#lastnameTextbox").val();
-                emp.Phoneno = $("#phoneTextbox").val();
-                emp.Email = $("#emailTextbox").val();
-                emp.DepartmentId = $("#ddlDepts").val();
+            var reader = new FileReader();
+            var file = $("#fileUpload")[0].files[0];
+            if (file !== undefined) {
+                reader.readAsBinaryString(file);
 
-                $.ajax({
-                    type: "Put",
-                    url: "api/employee",
-                    data: JSON.stringify(emp),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    processData: true
-                }).done(function (data) {
-                    $("#message").text(data);
-                    getEmployees();
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    $("#message").text("Error in update Employee.");
-                });
+                reader.onload = function (readerEvt) {
+                    var binaryString = reader.result;
+                    var encodedString = btoa(binaryString);
+                    $("#HiddenStaffPicture64").val(encodedString);
+
+                    doUpdate();
+                }
             } else {
-                // Create
-                emp = new Object();
-                emp.Title = $("#titleTextbox").val();
-                emp.Firstname = $("#firstnameTextbox").val();
-                emp.Lastname = $("#lastnameTextbox").val();
-                emp.Phoneno = $("#phoneTextbox").val();
-                emp.Email = $("#emailTextbox").val();
-                emp.DepartmentId = $("#ddlDepts").val();
-
-                $.ajax({
-                    type: "Post",
-                    url: "api/employee",
-                    data: JSON.stringify(emp),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    processData: true
-                }).done(function (data) {
-                    $("#message").text(data);
-                    getEmployees();
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    $("#message").text("Error in create Employee.");
-                });
+                doUpdate();
             }
         }
         else {
@@ -122,6 +88,62 @@
         return false;
     });
 });
+
+function doUpdate() {
+    if ($("#ButtonAction").val() === "Update") {
+        // Update
+        emp = new Object();
+        emp.Id = $("#HiddenId").val();
+        emp.Entity64 = $("#HiddenEntity").val();
+        emp.Title = $("#titleTextbox").val();
+        emp.Firstname = $("#firstnameTextbox").val();
+        emp.Lastname = $("#lastnameTextbox").val();
+        emp.Phoneno = $("#phoneTextbox").val();
+        emp.Email = $("#emailTextbox").val();
+        emp.DepartmentId = $("#ddlDepts").val();
+        emp.StaffPicture64 = $("#HiddenStaffPicture64").val();
+        emp.IsTech = $("#isTechCheck").val();
+
+        $.ajax({
+            type: "Put",
+            url: "api/employee",
+            data: JSON.stringify(emp),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            processData: true
+        }).done(function (data) {
+            $("#message").text(data);
+            getEmployees();
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            $("#message").text("Error in update Employee.");
+        });
+    } else {
+        // Create
+        emp = new Object();
+        emp.Title = $("#titleTextbox").val();
+        emp.Firstname = $("#firstnameTextbox").val();
+        emp.Lastname = $("#lastnameTextbox").val();
+        emp.Phoneno = $("#phoneTextbox").val();
+        emp.Email = $("#emailTextbox").val();
+        emp.DepartmentId = $("#ddlDepts").val();
+        emp.StaffPicture64 = $("#HiddenStaffPicture64").val();;
+        emp.IsTech = $("#isTechCheck").val();
+
+        $.ajax({
+            type: "Post",
+            url: "api/employee",
+            data: JSON.stringify(emp),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            processData: true
+        }).done(function (data) {
+            $("#message").text(data);
+            getEmployees();
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            $("#message").text("Error in create Employee.");
+        });
+    }
+}
 
 function buildTable(data) {
     $("#employeeNames").empty();
@@ -180,6 +202,13 @@ function getById(id) {
         $("#phoneTextbox").val(data.Phoneno);
         $("#emailTextbox").val(data.Email);
         loadDepartmentDDL(data.DepartmentId);
+        $("#ImageHolder").html(
+            '<img id="StaffPicture" height="120" width="110" src="data:image/png;base64,'
+            + data.StaffPicture64
+            + '" />'
+        );
+        $("#isTechCheck").val(data.IsTech);
+        $("#HiddenStaffPicture64").val(data.StaffPicture64);
         $("#message").text("Employee " + data.Firstname + " retrieved");
     }).fail(function (jqXHR, textStatus, errorThrown) {
         $("#message").text("Error in getting Employee.");
