@@ -6,6 +6,7 @@ using System.Diagnostics;
 // added for Mongo driver
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using MongoDB.Bson;
 
 namespace HelpdeskDAL
 {
@@ -58,6 +59,7 @@ namespace HelpdeskDAL
                 LoadPics();
                 LoadDepartments();
                 LoadEmployees();
+                LoadCalls();
                 createOk = true;
             }
             catch (Exception ex)
@@ -84,9 +86,19 @@ namespace HelpdeskDAL
                 {
                     db.DropCollection("employees");
                 }
+                if (db.CollectionExists("problems"))
+                {
+                    db.DropCollection("problems");
+                }
+                if (db.CollectionExists("calls"))
+                {
+                    db.DropCollection("calls");
+                }
 
                 db.CreateCollection("departments");
                 db.CreateCollection("employees");
+                db.CreateCollection("problems");
+                db.CreateCollection("calls");
             }
         }
 
@@ -141,6 +153,28 @@ namespace HelpdeskDAL
             ctx.Save<Employee>(emp, "employees");
         }
 
+        private void InsertProblem(string description)
+        {
+            Problem prb = new Problem();
+            prb.Description = description;
+            ctx.Save<Problem>(prb, "problems");
+        }
+
+        private void LoadProblems()
+        {
+            InsertProblem("Device Not Plugged In");
+            InsertProblem("Device Not Turned On");
+            InsertProblem("Hard Drive Failure");
+            InsertProblem("Memory Failure");
+            InsertProblem("Power Supply Failure");
+            InsertProblem("Password Fails due to Caps Lock being on");
+            InsertProblem("Network Card Faulty");
+            InsertProblem("CPU Fan Failure");
+            InsertProblem("Memory Upgrade");
+            InsertProblem("Graphics Upgrade");
+            InsertProblem("Needs Software Upgrade");
+        }
+
         private void LoadPics()
         {
             DictionaryEmployees = new Dictionary<string, string>();
@@ -165,6 +199,31 @@ namespace HelpdeskDAL
                     retval = pic.Value;
             }
             return retval;
+        }
+
+        private void InsertCall(
+            ObjectId Employee, 
+            ObjectId Problem, 
+            ObjectId Tech, 
+            DateTime DateOpened, 
+            DateTime DateClosed, 
+            bool OpenStatus, 
+            string Notes
+        ){
+            Call call = new Call();
+            call.EmployeeId = Employee;
+            call.ProblemId = Problem;
+            call.TechId = Tech;
+            call.DateOpened = DateOpened;
+            call.DateClosed = DateClosed;
+            call.OpenStatus = OpenStatus;
+            call.Notes = Notes;
+            ctx.Save<Call>(call, "Calls");
+        }
+
+        private void LoadCalls()
+        {
+            // WHOO!!!
         }
     }
 }

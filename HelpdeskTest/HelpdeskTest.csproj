@@ -62,6 +62,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="DAO\CallTests.cs" />
     <Compile Include="DAO\DepartmentTests.cs" />
     <Compile Include="ViewModel\DepartmentViewModelTests.cs" />
     <Compile Include="ViewModel\ProblemViewModelTests.cs" />

@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DepartmentViewModel.cs" />
+    <Compile Include="CallViewModel.cs" />
     <Compile Include="ProblemViewModel.cs" />
     <Compile Include="EmployeeViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

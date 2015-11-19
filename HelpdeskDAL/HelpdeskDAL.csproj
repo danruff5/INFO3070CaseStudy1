@@ -52,11 +52,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Call.cs" />
     <Compile Include="DALUtils.cs" />
     <Compile Include="DbContext.cs" />
     <Compile Include="Department.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="DepartmentDAO.cs" />
+    <Compile Include="CallDAO.cs" />
     <Compile Include="ProblemDAO.cs" />
     <Compile Include="EmployeeDAO.cs" />
     <Compile Include="Problem.cs" />

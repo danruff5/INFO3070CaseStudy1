@@ -35,5 +35,13 @@ namespace HelpdeskDAL
                 return this.Db.GetCollection<Problem>("problems").AsQueryable();
             }
         }
+
+        public IQueryable<Call> Calls
+        {
+            get
+            {
+                return this.Db.GetCollection<Call>("calls").AsQueryable();
+            }
+        }
     }
 }
