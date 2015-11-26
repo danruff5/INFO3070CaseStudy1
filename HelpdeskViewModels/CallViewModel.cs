@@ -17,6 +17,8 @@ namespace HelpdeskViewModels
         public bool OpenStatus { get; set; }
         public string Notes { get; set; }
         public string Entity64 { get; set; }
+        public string DisplayName { get; set; }
+        public string DisplayProblem { get; set; }
         
 
         public CallViewModel()
@@ -56,7 +58,10 @@ namespace HelpdeskViewModels
                 call.ProblemId = new ObjectId(ProblemId);
                 call.TechId = new ObjectId(ProblemId);
                 call.DateOpened = DateOpened;
-                call.DateClosed = DateClosed;
+                if (!OpenStatus)
+                {
+                    call.DateClosed = DateClosed;
+                }
                 call.OpenStatus = OpenStatus;
                 call.Notes = Notes;
                 rowUp = _dao.Update(call);
@@ -102,6 +107,15 @@ namespace HelpdeskViewModels
                     viewModel.DateOpened = c.DateOpened;
                     viewModel.EmployeeId = c.EmployeeId.ToString();
                     viewModel.ProblemId = c.ProblemId.ToString();
+
+                    EmployeeViewModel emp = new EmployeeViewModel();
+                    emp.GetById(c.EmployeeId.ToString());
+                    viewModel.DisplayName = emp.Firstname;
+
+                    ProblemViewModel prb = new ProblemViewModel();
+                    prb.GetById(c.ProblemId.ToString());
+                    viewModel.DisplayProblem = prb.Description;
+
                     viewModels.Add(viewModel); // Add to list
                 }
             } catch (Exception ex)

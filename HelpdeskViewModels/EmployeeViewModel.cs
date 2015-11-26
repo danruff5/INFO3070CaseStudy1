@@ -114,6 +114,31 @@ namespace HelpdeskViewModels
             return viewModels;
         }
 
+        public List<EmployeeViewModel> GetAllTech()
+        {
+            List<EmployeeViewModel> viewModels = new List<EmployeeViewModel>();
+
+            try
+            {
+                List<Employee> employees = _dao.GetAllTech();
+
+                foreach (Employee e in employees)
+                {
+                    // Return only fields for display, subdequent get will other fields
+                    EmployeeViewModel viewModel = new EmployeeViewModel();
+                    viewModel.Id = e._id.ToString();
+                    viewModel.Title = e.Title;
+                    viewModel.Firstname = e.Firstname;
+                    viewModel.Lastname = e.Lastname;
+                    viewModels.Add(viewModel); // Add to list
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorRoutine(ex, "EmployeeViewModel", "GetAll");
+            }
+            return viewModels;
+        }
         public bool Delete()
         {
             bool deleteOK = false;

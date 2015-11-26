@@ -64,6 +64,23 @@ namespace HelpdeskDAL
             return allEmps;
         }
 
+        public List<Employee> GetAllTech()
+        {
+            List<Employee> techEmps = new List<Employee>();
+
+            try
+            {
+                DbContext ctx = new DbContext();
+                techEmps = ctx.Employees.Where(e => e.IsTech).ToList();
+            }
+            catch (Exception ex)
+            {
+                DALUtils.ErrorRoutine(ex, "EmployeeDAO", "GetAllTech");
+            }
+
+            return techEmps;
+        }
+
         public int Update(Employee emp)
         {
             int update = -1;

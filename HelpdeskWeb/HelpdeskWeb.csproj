@@ -89,6 +89,7 @@
     <Content Include="Content\Img\retina_wood.png" />
     <Content Include="Content\main.css" />
     <Content Include="department.html" />
+    <Content Include="call.html" />
     <Content Include="employee.html" />
     <Content Include="employeetests.html" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -105,6 +106,7 @@
     <Content Include="problem.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Call.js" />
     <Content Include="Scripts\Department.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\employeeTests.js" />
@@ -121,6 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\CallController.cs" />
     <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\ProblemController.cs" />

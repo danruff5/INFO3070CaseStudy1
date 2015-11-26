@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Call</title>
+	<meta charset="utf-8" />
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="Content/main.css" rel="stylesheet" />
+</head>
+<body>
+    <main>
+        <nav id="nav"></nav>
+        <section>
+            <div id="image"></div>
+            <div class="row">
+                <div class="col-sm-4 col-xs-2"></div>
+                <div id="CallPanel" class="panel-group col-sm-4 col-xs-8" style="
+                                                        z-index: 100;
+                                                        border-style: solid;
+                                                        border-width: 1px;
+                                                        padding-left: 0;
+                                                        padding-right: 0;">
+                    <div class="panel" style="background-color: black; color: white; border: none;">
+                        <div class="panel-heading xsmall row">
+                            <div class="col-xs-4">Date Opened</div>
+                            <div class="col-xs-4">Employee Name</div>
+                            <div class="col-xs-4" style="padding-left: 6%">Problem</div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel panel-primary" style="height: 100px;
+                                                            overflow-y: auto;
+                                                            overflow-x: hidden;
+                                                            border: none;
+                                                            height: 200px;">
+                            <div id="calls"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form id="CallForm" name="CallForm" method="post" action="">
+                <div class="modal fade text-center" id="callModal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">X</button>
+                                <h1>Call Information</h1>
+                            </div>
+                            <div class="modal-body" style="overflow: auto;">
+                                <div class="text-right col-xs-4">Problem:</div>
+                                <div class="col-xs-7">
+                                    <select name="ddlProblems" class="form-control ddl" id="ddlProblems"></select>
+                                </div>
+                                <div class="text-right col-xs-4">Employee:</div>
+                                <div class="col-xs-7">
+                                    <select name="ddlEmployees" class="form-control ddl" id="ddlEmployees"></select>
+                                </div>
+                                <div class="text-right col-xs-4">Technician:</div>
+                                <div class="col-xs-7">
+                                    <select name="ddlTechs" class="form-control ddl" id="ddlTechs"></select>
+                                </div>
+                                <div class="text-right col-xs-4">Date Opened:</div>
+                                <div class="col-xs-7">
+                                    <div id="DateOpenedLabel" name="DateOpenedLabel"></div>
+                                </div>
+                                <div class="text-right col-xs-4">Date Closed:</div>
+                                <div class="col-xs-7">
+                                    <div id="DateClosedLabel" name="DateClosedLabel"></div>
+                                </div>
+                                <div class="text-right col-xs-4">Close Call:</div>
+                                <div class="col-xs-7">
+                                    <input type="checkbox" class="form-control" id="CloseCallCheck" name="CloseCallCheck" />
+                                </div>
+                                <div class="text-right col-xs-4">Notes:</div>
+                                <div class="col-xs-7">
+                                    <textarea type="text" class="form-control" id="NotesTextArea" name="NotesTextArea"></textarea>
+                                </div>
+                                <input type="hidden" id="HiddenId" />
+                                <input type="hidden" id="HiddenEntity" />
+                                <input type="hidden" id="HiddenDateOpened" />
+                                <input type="hidden" id="HiddenDateClosed" />
+                            </div>
+                            <div class="modal-footer">
+                                <div id="message2" style="float: left; width: 150px; padding: 6px 0; text-align: center;"></div>
+                                <input type="submit" id="ButtonAction" class="btn" />
+                                <input type="submit" id="ButtonDelete" class="btn" value="Delete" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <script src="Scripts/jquery-1.9.1.min.js"></script>
+    <script src="Scripts/jquery.validate.min.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script src="Scripts/include.js"></script>
+    <script src="Scripts/Call.js"></script>
+</body>
+</html>

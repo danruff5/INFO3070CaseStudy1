@@ -59,6 +59,7 @@ namespace HelpdeskDAL
                 LoadPics();
                 LoadDepartments();
                 LoadEmployees();
+                LoadProblems();
                 LoadCalls();
                 createOk = true;
             }

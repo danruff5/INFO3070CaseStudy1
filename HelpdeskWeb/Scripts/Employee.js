@@ -1,4 +1,8 @@
 ﻿$(function () {
+    $.validator.addMethod("validTitle", function (value, element) { // custom rule
+        return this.optional(element) || (value == "Mr." || value == "Ms." || value == "Mrs." || value == "Dr.");
+    }, "");
+
     getEmployees();
 
     $("#employeeNames").click(function (e) {
@@ -28,17 +32,21 @@
         } else { // New employee
             $("#ButtonDelete").hide();
             $("#ButtonAction").prop("value", "Add");
+            $("#ButtonAction").prop("disabled", false);
             $("#HiddenId").val("");
+            $("#HiddenEntity").val("");
+            $("#HiddenStaffPicture64").val("");
+            $("#ImageHolder").html("");
             $("#titleTextbox").val("");
             $("#firstnameTextbox").val("");
             $("#lastnameTextbox").val("");
             $("#phoneTextbox").val("");
             $("#emailTextbox").val("");
             // TODO: Make the default picture.... From default user in database???
-            $("#ButtonUpdate").prop("value", "Add");
-            $("#ButtonDelete").hide();
             loadDepartmentDDL(-1);
         }
+
+        return true;
     });
 
     $("#ButtonDelete").click(function () {
@@ -55,9 +63,9 @@
                 $("#message").text("Error in delete Employee.");
                 $("#employeeModal").modal("hide");
             });
-            return deleteEmp;
+            return false; // https://support.microsoft.com/en-us/kb/942051
         } else
-            return deleteEmp;
+            return true;
     });
 
     $("#ButtonAction").click(function () {
@@ -102,7 +110,7 @@ function doUpdate() {
         emp.Email = $("#emailTextbox").val();
         emp.DepartmentId = $("#ddlDepts").val();
         emp.StaffPicture64 = $("#HiddenStaffPicture64").val();
-        emp.IsTech = $("#isTechCheck").val();
+        emp.IsTech = $('#isTechCheck').is(':checked');
 
         $.ajax({
             type: "Put",
@@ -127,7 +135,7 @@ function doUpdate() {
         emp.Email = $("#emailTextbox").val();
         emp.DepartmentId = $("#ddlDepts").val();
         emp.StaffPicture64 = $("#HiddenStaffPicture64").val();;
-        emp.IsTech = $("#isTechCheck").val();
+        emp.IsTech = $('#isTechCheck').is(':checked');
 
         $.ajax({
             type: "Post",
@@ -164,10 +172,6 @@ function buildTable(data) {
         );
         div.appendTo($("#employeeNames"));
     });
-
-    $.validator.addMethod("validTitle", function (value, element) { // custom rule
-        return this.optional(element) || (value == "Mr." || value == "Ms." || value == "Mrs." || value == "Dr.");
-    }, "");
 }
 
 function getEmployees() {
@@ -207,7 +211,7 @@ function getById(id) {
             + data.StaffPicture64
             + '" />'
         );
-        $("#isTechCheck").val(data.IsTech);
+        $("#isTechCheck").prop('checked', data.IsTech);
         $("#HiddenStaffPicture64").val(data.StaffPicture64);
         $("#message").text("Employee " + data.Firstname + " retrieved");
     }).fail(function (jqXHR, textStatus, errorThrown) {
