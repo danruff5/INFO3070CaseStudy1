@@ -73,7 +73,7 @@ namespace HelpdeskDAL
                 ctx.Save<Problem>(prb, "problems");
                 update = 1;
             }
-            catch (MongoConcurrencyException ex)
+            catch (MongoConcurrencyException)
             {
                 update = -2;
             }

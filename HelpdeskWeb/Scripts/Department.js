@@ -26,25 +26,23 @@
     $("#ButtonDelete").click(function () {
         var deleteDep = confirm("Really delete this department?");
         if (deleteDep) {
-            //$("#message").text("Loading...");
             $.ajax({
                 type: "Delete",
                 url: "api/department/" + $("#HiddenId").val(),
                 contentType: "application/json; charset=utf-8"
             }).done(function (data) {
-                $("#message").text(data);
+                Message(data, "defaultMsg");
                 getDepartments();
             }).fail(function (jqXHR, textStatus, errorThrown) {
-                $("#message").text("Error in delete Department.");
+                Message("Error in delete Department.", "errorMsg");
                 $("#employeeModal").modal("hide");
             });
-            return deleteEmp;
+            return !deleteDep;
         } else
-            return deleteEmp;
+            return !deleteDep;
     });
 
     $("#ButtonAction").click(function () {
-        //$("#message").text("Loading...");
         if ($("#ButtonAction").val() === "Update") {
             // Update
             dep = new Object();
@@ -60,10 +58,10 @@
                 dataType: "json",
                 processData: true
             }).done(function (data) {
-                $("#message").text(data);
+                Message(data, "defaultMsg");
                 getDepartments();
             }).fail(function (jqXHR, textStatus, errorThrown) {
-                $("#message").text("Error in update Department.");
+                Message("Error in update Department.", "errorMsg");
             });
         } else {
             // Create
@@ -78,10 +76,10 @@
                 dataType: "json",
                 processData: true
             }).done(function (data) {
-                $("#message").text(data);
+                Message(data, "defaultMsg");
                 getDepartments();
             }).fail(function (jqXHR, textStatus, errorThrown) {
-                $("#message").text("Error in create Department.");
+                Message("Error in create Department.", "errorMsg");
             });
         }
 
@@ -108,7 +106,6 @@ function buildTable(data) {
 }
 
 function getDepartments() {
-    //$("#message").text("Loading...");
     return $.ajax({ // Return the promise that $.ajax returns (deferred object)
         type: "Get",
         url: "api/departments",
@@ -117,15 +114,14 @@ function getDepartments() {
         processData: true
     }).done(function (data) {
         buildTable(data);
-        $("#message").append(" Departments Retrived.");
+        Message("Departments Retrived.", "successMsg");
         $("#departmentModal").modal('hide');
     }).fail(function (jqXHR, textStatus, errorThrown) {
-        $("#message").append(" Error in getting all Departments.");
+        Message(" Error in getting all Departments.", "errorMsg");
     });
 }
 
 function getById(id) {
-    //$("#message").text("Loading...");
     var data = $.ajax({
         type: "Get",
         url: "api/department/" + id,
@@ -136,8 +132,8 @@ function getById(id) {
         $("#HiddenId").val(data.Id);
         $("#HiddenEntity").val(data.Entity64);
         $("#nameTextbox").val(data.DepartmentName);
-        $("#message").text("Department " + data.DepartmentName + " retrieved");
+        Message("Department " + data.DepartmentName + " retrieved", "successMsg");
     }).fail(function (jqXHR, textStatus, errorThrown) {
-        $("#message").text("Error in getting Department.");
+        Message("Error in getting Department.", "errorMsg");
     });
 }

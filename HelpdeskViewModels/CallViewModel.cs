@@ -56,7 +56,7 @@ namespace HelpdeskViewModels
                 Call call = (Call)Deserializer(bytCall);
                 call.EmployeeId = new ObjectId(EmployeeId);
                 call.ProblemId = new ObjectId(ProblemId);
-                call.TechId = new ObjectId(ProblemId);
+                call.TechId = new ObjectId(TechId);
                 call.DateOpened = DateOpened;
                 if (!OpenStatus)
                 {

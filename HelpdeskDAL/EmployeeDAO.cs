@@ -23,7 +23,7 @@ namespace HelpdeskDAL
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Problem " + ex.Message);
+                DALUtils.ErrorRoutine(ex, "EmployeeDAO", "GetBySurname");
             }
 
             return retEmp;
@@ -42,7 +42,7 @@ namespace HelpdeskDAL
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Problem " + ex.Message);
+                DALUtils.ErrorRoutine(ex, "EmployeeDAO", "GetById");
             }
 
             return retEmp;
@@ -90,7 +90,7 @@ namespace HelpdeskDAL
                 ctx.Save<Employee>(emp, "employees");
                 update = 1;
             }
-            catch (MongoConcurrencyException ex)
+            catch (MongoConcurrencyException)
             {
                 update = -2;
             }

@@ -24,7 +24,6 @@
     });
 
     $("#ButtonDelete").click(function () {
-        //$("#message").text("Loading...");
         var deletePrb= confirm("Really delete this problem?");
         if (deletePrb) {
             $.ajax({
@@ -32,19 +31,18 @@
                 url: "api/problem/" + $("#HiddenId").val(),
                 contentType: "application/json; charset=utf-8"
             }).done(function (data) {
-                $("#message").text(data);
+                Message(data, "defaultMsg");
                 getProblems();
             }).fail(function (jqXHR, textStatus, errorThrown) {
-                $("#message").text("Error in delete Problem.");
+                Message("Error in delete Problem.", "errorMsg");
                 $("#employeeModal").modal("hide");
             });
-            return deletePrb;
+            return !deletePrb;
         } else
-            return deletePrb;
+            return !deletePrb;
     });
 
     $("#ButtonAction").click(function () {
-        //$("#message").text("Loading...");
         if ($("#ButtonAction").val() === "Update") {
             // Update
             prb = new Object();
@@ -60,10 +58,10 @@
                 dataType: "json",
                 processData: true
             }).done(function (data) {
-                $("#message").text(data);
+                Message(data, "defaultMsg");
                 getProblems();
             }).fail(function (jqXHR, textStatus, errorThrown) {
-                $("#message").text("Error in update Problem.");
+                Message("Error in update Problem.", "errorMsg");
             });
         } else {
             // Create
@@ -78,10 +76,10 @@
                 dataType: "json",
                 processData: true
             }).done(function (data) {
-                $("#message").text(data);
+                Message(data, "defaultMsg");
                 getProblems();
             }).fail(function (jqXHR, textStatus, errorThrown) {
-                $("#message").text("Error in create Problem.");
+                Message("Error in create Problem.", "errorMsg");
             });
         }
 
@@ -108,7 +106,6 @@ function buildTable(data) {
 }
 
 function getProblems() {
-    //$("#message").text("Loading...");
     return $.ajax({ // Return the promise that $.ajax returns (deferred object)
         type: "Get",
         url: "api/problems",
@@ -117,15 +114,14 @@ function getProblems() {
         processData: true
     }).done(function (data) {
         buildTable(data);
-        $("#message").append(" Problems Retrived.");
+        Message("Problems Retrivied", "successMsg");
         $("#problemModal").modal('hide');
     }).fail(function (jqXHR, textStatus, errorThrown) {
-        $("#message").append(" Error in getting all Problems.");
+        Message("Error in getting all Problems.", "errorMsg");
     });
 }
 
 function getById(id) {
-    //$("#message").text("Loading...");
     var data = $.ajax({
         type: "Get",
         url: "api/problem/" + id,
@@ -136,8 +132,8 @@ function getById(id) {
         $("#HiddenId").val(data.Id);
         $("#HiddenEntity").val(data.Entity64);
         $("#descriptionTextbox").val(data.Description);
-        $("#message").text("Problem " + data.Description + " retrieved");
+        Message("Problem " + data.Description + " retrieved", "successMsg");
     }).fail(function (jqXHR, textStatus, errorThrown) {
-        $("#message").text("Error in getting Problem.");
+        Message("Error in getting Problem.", "errorMsg");
     });
 }

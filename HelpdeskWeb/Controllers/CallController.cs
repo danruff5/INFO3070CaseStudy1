@@ -45,7 +45,7 @@ namespace HelpdeskWeb.Controllers
                 CallViewModel call = new CallViewModel();
                 call.GetById(id);
                 if (call.Delete())
-                    return Ok("Call Deleted");
+                    return Ok("Call " + call.Id + " Deleted");
                 else
                     return BadRequest("Could not delete");
             }

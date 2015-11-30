@@ -44,8 +44,10 @@ namespace HelpdeskWeb.Controllers
             {
                 DepartmentViewModel dep = new DepartmentViewModel();
                 dep.GetById(id);
-                if (dep.Delete())
-                    return Ok(dep.Delete());
+
+                bool deleteOk = dep.Delete();
+                if (deleteOk)
+                    return Ok(dep.DepartmentName + " deleted.");
                 else 
                     return BadRequest("Could not delete");
             }
@@ -65,16 +67,12 @@ namespace HelpdeskWeb.Controllers
                 {
                     case 1:
                         return Ok("Department " + dep.DepartmentName + " updated!");
-                        break;
                     case -1:
                         return Ok("Department" + dep.DepartmentName + " not updated!");
-                        break;
                     case -2:
                         return Ok("Data is stale for " + dep.DepartmentName + ". Department not updated!");
-                        break;
                     default:
                         return Ok("Department" + dep.DepartmentName + " not updated!");
-                        break;
                 }
             }
             catch (Exception ex)

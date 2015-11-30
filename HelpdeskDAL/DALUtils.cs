@@ -219,7 +219,7 @@ namespace HelpdeskDAL
             call.DateClosed = DateClosed;
             call.OpenStatus = OpenStatus;
             call.Notes = Notes;
-            ctx.Save<Call>(call, "Calls");
+            ctx.Save<Call>(call, "calls");
         }
 
         private void LoadCalls()

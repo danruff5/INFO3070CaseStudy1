@@ -17,8 +17,6 @@
         $("#NotesTextArea").prop("readonly", false);
         $("#ButtonAction").show();
 
-        $("#message").text("Loading...");
-
         if (!e) e = window.event;
         var callId = e.target.parentNode.id;
 
@@ -29,10 +27,10 @@
         $("#ButtonAction").prop("disabled", true);
 
         if (callId != "call") {
+            Message("Loading...", "defaultMsg");
             getById(callId); // Existing call
 
-            $("#message2").text("Call found!");
-            $("#message2").css({ "color": "green" });
+            Message("Call found!", "successMsg");
             $("#ButtonAction").prop("disabled", false);
 
             $("#ButtonAction").prop("value", "Update");
@@ -67,10 +65,10 @@
                 url: "api/call/" + $("#HiddenId").val(),
                 contentType: "application/json; charset=utf-8"
             }).done(function (data) {
-                $("#message").text(data);
+                Message(data, "defaultMsg");
                 getCalls();
             }).fail(function (jqXHR, textStatus, errorThrown) {
-                $("#message").text("Error in delete Call.");
+                Message("Error in delete Call.", "errorMsg");
                 $("#callModal").modal("hide");
             });
             return !deleteCall; // false!!
@@ -80,13 +78,11 @@
 
     $("#ButtonAction").click(function () {
         if ($("#CallForm").valid()) {
-            $("#message2").text("Data Validated by jQuery!");
-            $("#message2").css({ "color": "green" });
+            Message("Data Validated by jQuery!", "successMsg");
             doUpdate();
         }
         else {
-            $("#message2").text("Please correct errors.");
-            $("#message2").css({ "color": "red" });
+            Message("Please correct errors.", "errorMsg");
         }
         return false;
     });
@@ -126,10 +122,10 @@ function doUpdate() {
             dataType: "json",
             processData: true
         }).done(function (data) {
-            $("#message").text(data);
+            Message(data, "defaultMsg");
             getCalls();
         }).fail(function (jqXHR, textStatus, errorThrown) {
-            $("#message").text("Error in update Call.");
+            Message("Error in update Call.", "errorMsg");
         });
     } else {
         // Create
@@ -141,10 +137,10 @@ function doUpdate() {
             dataType: "json",
             processData: true
         }).done(function (data) {
-            $("#message").text(data);
+            Message(data, "defaultMsg");
             getCalls();
         }).fail(function (jqXHR, textStatus, errorThrown) {
-            $("#message").text("Error in create Call.");
+            Message("Error in create Call.", "errorMsg");
         });
     }
 }
@@ -178,10 +174,10 @@ function getCalls() {
         processData: true
     }).done(function (data) {
         buildTable(data);
-        $("#message").append(" Calls Retrived.");
+        Message("Calls Retrived.", "successMsg");
         $("#callModal").modal('hide');
     }).fail(function (jqXHR, textStatus, errorThrown) {
-        $("#message").append(" Error in getting all Calls.");
+        Message("Error in getting all Calls.", "errorMsg");
     });
 }
 
@@ -211,7 +207,7 @@ function getById(id) {
 
         $("#HiddenEntity").val(data.Entity64);
         
-        $("#message").text("Call retrieved");
+        Message("Call retrieved", "successMsg");
 
         if (!data.OpenStatus) {
             // Disable everything...
@@ -223,7 +219,7 @@ function getById(id) {
             $("#ButtonAction").hide();
         }
     }).fail(function (jqXHR, textStatus, errorThrown) {
-        $("#message").text("Error in getting Call.");
+        Message("Error in getting Call.", "errorMsg");
     });
 }
 
@@ -241,7 +237,7 @@ function loadEmployeeDDL(empdep) {
         $("#ddlEmployees").append(html);
         $("#ddlEmployees").val(empdep);
     }).fail(function (jqXHR, textStatus, errorThrown) {
-        $("#message").text("Error in getting Employees.");
+        Message("Error in getting Employees.", "errorMsg");
     });
 }
 
@@ -259,7 +255,7 @@ function loadProblemsDDL(prbdep) {
         $("#ddlProblems").append(html);
         $("#ddlProblems").val(prbdep);
     }).fail(function (jqXHR, textStatus, errorThrown) {
-        $("#message").text("Error in getting Problems.");
+        Message("Error in getting Problems.", "errorMsg");
     });
 }
 
@@ -277,11 +273,11 @@ function loadTechDDL(techdep) {
         $("#ddlTechs").append(html);
         $("#ddlTechs").val(techdep);
     }).fail(function (jqXHR, textStatus, errorThrown) {
-        $("#message").text("Error in getting Technicians.");
+        Message("Error in getting Technicians.", "errorMsg");
     });
 }
 
-$("#CallForm").validate({ // TODO: Validate...
+$("#CallForm").validate({
     rules: {
         ddlProblems: { required: true, notDefault: true },
         ddlEmployees: { required: true, notDefault: true },

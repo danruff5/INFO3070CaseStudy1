@@ -3,13 +3,15 @@
         return this.optional(element) || (value == "Mr." || value == "Ms." || value == "Mrs." || value == "Dr.");
     }, "");
 
+    $.validator.addMethod("notDefault", function (value, element) { // custom rule
+        return this.optional(element) || (value != "notValid");
+    }, "");
+
     getEmployees();
 
     $("#employeeNames").click(function (e) {
         var validator = $('#EmployeeForm').validate();
         validator.resetForm();
-
-        $("#message").text("Loading...");
 
         if (!e) e = window.event;
         var empId = e.target.parentNode.id;
@@ -22,9 +24,10 @@
 
         if (empId != "employee") {
             getById(empId); // Existing employee
+            Message("Loading...", "defaultMsg");
 
-            $("#message2").text("Employee found!");
-            $("#message2").css({ "color": "green" });
+            Message("Employee Found!", "successMsg");
+
             $("#ButtonAction").attr("disabled", false);
 
             $("#ButtonAction").prop("value", "Update");
@@ -42,7 +45,12 @@
             $("#lastnameTextbox").val("");
             $("#phoneTextbox").val("");
             $("#emailTextbox").val("");
-            // TODO: Make the default picture.... From default user in database???
+            $("#HiddenStaffPicture64").val($("#HiddenDefaultPicture64").val());
+            $("#ImageHolder").html(
+                '<img id="StaffPicture" height="120" width="110" src="data:image/png;base64,'
+                + $("#HiddenStaffPicture64").val()
+                + '" />'
+            );
             loadDepartmentDDL(-1);
         }
 
@@ -57,10 +65,10 @@
                 url: "api/employee/" + $("#HiddenId").val(),
                 contentType: "application/json; charset=utf-8"
             }).done(function (data) {
-                $("#message").text(data);
+                Message(data, "defaultMsg");
                 getEmployees();
             }).fail(function (jqXHR, textStatus, errorThrown) {
-                $("#message").text("Error in delete Employee.");
+                Message("Error in delete Employee.", "errorMsg");
                 $("#employeeModal").modal("hide");
             });
             return false; // https://support.microsoft.com/en-us/kb/942051
@@ -70,8 +78,7 @@
 
     $("#ButtonAction").click(function () {
         if ($("#EmployeeForm").valid()) {
-            $("#message2").text("Data Validated by jQuery!");
-            $("#message2").css({ "color": "green" });
+            Message("Data Validated by jQuery!", "successMsg");
 
             var reader = new FileReader();
             var file = $("#fileUpload")[0].files[0];
@@ -90,8 +97,7 @@
             }
         }
         else {
-            $("#message2").text("Please correct errors.");
-            $("#message2").css({ "color": "red" });
+            Message("Please correct errors.", "errorMsg");
         }
         return false;
     });
@@ -121,9 +127,10 @@ function doUpdate() {
             processData: true
         }).done(function (data) {
             $("#message").text(data);
+            Message(data, "defaultMsg");
             getEmployees();
         }).fail(function (jqXHR, textStatus, errorThrown) {
-            $("#message").text("Error in update Employee.");
+            Message("Error in update Employee.", "errorMsg");
         });
     } else {
         // Create
@@ -145,10 +152,10 @@ function doUpdate() {
             dataType: "json",
             processData: true
         }).done(function (data) {
-            $("#message").text(data);
+            Message(data, "defaultMsg");
             getEmployees();
         }).fail(function (jqXHR, textStatus, errorThrown) {
-            $("#message").text("Error in create Employee.");
+            Message("Error in create Employee.", "errorMsg");
         });
     }
 }
@@ -183,10 +190,10 @@ function getEmployees() {
         processData: true
     }).done(function (data) {
         buildTable(data);
-        $("#message").append(" Employees Retrived.");
+        Message("Employees Retrived.", "successMsg");
         $("#employeeModal").modal('hide');
     }).fail(function (jqXHR, textStatus, errorThrown) {
-        $("#message").append(" Error in getting all Employees.");
+        Message("Error in getting all Employees.", "errorMsg");
     });
 }
 
@@ -213,9 +220,9 @@ function getById(id) {
         );
         $("#isTechCheck").prop('checked', data.IsTech);
         $("#HiddenStaffPicture64").val(data.StaffPicture64);
-        $("#message").text("Employee " + data.Firstname + " retrieved");
+        Message("Employee " + data.Firstname + " retrieved", "successMsg");
     }).fail(function (jqXHR, textStatus, errorThrown) {
-        $("#message").text("Error in getting Employee.");
+        Message("Error in getting Employee.", "errorMsg");
     });
 }
 
@@ -225,7 +232,7 @@ function loadDepartmentDDL(empdep) {
         url: "api/departments",
         contentType: "application/json; charset=utf-8"
     }).done(function (data) {
-        html = "";
+        html = "<option value=\"notValid\">Select a Value</option>";
         $("#ddlDepts").empty();
         $.each(data, function () {
             html += "<option value=\"" + this["Id"] + "\">" + this["DepartmentName"] + "</option>";
@@ -233,7 +240,7 @@ function loadDepartmentDDL(empdep) {
         $("#ddlDepts").append(html);
         $("#ddlDepts").val(empdep);
     }).fail(function (jqXHR, textStatus, errorThrown) {
-        $("#message").text("Error in getting Departments.");
+        Message("Error in getting Departments.", "errorMsg");
     });
 }
 
@@ -243,7 +250,8 @@ $("#EmployeeForm").validate({
         firstnameTextbox: { maxlength: 25, required: true },
         lastnameTextbox: { maxlength: 25, required: true },
         emailTextbox: { maxlength: 40, required: true, email: true },
-        phoneTextbox: { maxlength: 15, required: true }
+        phoneTextbox: { maxlength: 15, required: true },
+        ddlDepts: { required: true, notDefault: true }
     },
     ignore: ".ignore, :hidden",
     errorElement: "div",
@@ -263,6 +271,9 @@ $("#EmployeeForm").validate({
         },
         phoneTextbox: {
             required: "Required field.", maxlength: "Must be 1-40 characters.", email: "Needs to be a valid email format"
+        },
+        ddlDepts: {
+            required: "Required field.", notDefault: "Must Select a Value."
         }
     }
 });

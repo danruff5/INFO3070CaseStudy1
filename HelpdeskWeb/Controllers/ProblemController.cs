@@ -45,7 +45,7 @@ namespace HelpdeskWeb.Controllers
                 ProblemViewModel prb = new ProblemViewModel();
                 prb.GetById(id);
                 if (prb.Delete())
-                    return Ok();
+                    return Ok("Problem " + prb.Description + " deleted.");
                 else
                     return BadRequest("Could not delete");
             }
@@ -79,16 +79,12 @@ namespace HelpdeskWeb.Controllers
                 {
                     case 1:
                         return Ok("Problem " + prb.Description + " updated!");
-                        break;
                     case -1:
                         return Ok("Problem" + prb.Description + " not updated!");
-                        break;
                     case -2:
                         return Ok("Data is stale for " + prb.Description + ". Problem not updated!");
-                        break;
                     default:
                         return Ok("Problem" + prb.Description + " not updated!");
-                        break;
                 }
             }
             catch (Exception ex)

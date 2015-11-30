@@ -1,18 +1,18 @@
 ﻿$(function () {
     $("#LoadButton").click(function () {
-        $("#message").text("Loading...");
+        Message("Loading...", "defaultMsg");
         $.ajax({
             type: "Delete",
             url: "api/util",
             contentType: "application/json; charset=utf-8"
         }).done(function (data) {
             if (data === true) {
-                $("#message").text("Database loaded");
+                Message("Database loaded", "successMsg");
             } else {
-                $("#message").text("Database not loaded");
+                Message("Database not loaded", "errorMsg");
             }
         }).fail(function (jqXHR, textStatus, errorThrown) {
-            $("#message").text("Database not loaded");
+            Message("Database not loaded", "errorMsg");
         });
     });
 });
