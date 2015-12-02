@@ -105,6 +105,7 @@ namespace HelpdeskViewModels
                     viewModel.Title = e.Title;
                     viewModel.Firstname = e.Firstname;
                     viewModel.Lastname = e.Lastname;
+                    viewModel.StaffPicture64 = e.StaffPicture64;
                     viewModels.Add(viewModel); // Add to list
                 }
             } catch (Exception ex)

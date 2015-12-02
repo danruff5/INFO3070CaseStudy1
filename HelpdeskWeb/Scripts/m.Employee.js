@@ -3,10 +3,6 @@
         return this.optional(element) || (value == "Mr." || value == "Ms." || value == "Mrs." || value == "Dr.");
     }, "");
 
-    $.validator.addMethod("notDefault", function (value, element) { // custom rule
-        return this.optional(element) || (value != "notValid");
-    }, "");
-
     getEmployees();
 
     $("#employeeNames").click(function (e) {
@@ -14,47 +10,25 @@
         validator.resetForm();
 
         if (!e) e = window.event;
-        var empId = e.target.parentNode.id;
+        var empId = e.target.id;
 
-        if (empId == "main") {
-            empId = e.target.id; // Clicked on row somewhere else
-        }
+        if (empId.length === 24) {
 
-        $("#ButtonAction").attr("disabled", true);
+            $("#ButtonAction").attr("disabled", true);
 
-        if (empId != "employee") {
             getById(empId); // Existing employee
-            Message("Loading...", "defaultMsg");
+            $("#LabelStatus").text("Loading");
 
-            Message("Employee Found!", "successMsg");
+            $("#LabelStatus2").text("Employee Found!");
 
             $("#ButtonAction").attr("disabled", false);
 
             $("#ButtonAction").prop("value", "Update");
             $("#ButtonDelete").show();
-        } else { // New employee
-            $("#ButtonDelete").hide();
-            $("#ButtonAction").prop("value", "Add");
-            $("#ButtonAction").prop("disabled", false);
-            $("#HiddenId").val("");
-            $("#HiddenEntity").val("");
-            $("#HiddenStaffPicture64").val("");
-            $("#ImageHolder").html("");
-            $("#titleTextbox").val("");
-            $("#firstnameTextbox").val("");
-            $("#lastnameTextbox").val("");
-            $("#phoneTextbox").val("");
-            $("#emailTextbox").val("");
-            $("#HiddenStaffPicture64").val($("#HiddenDefaultPicture64").val());
-            $("#ImageHolder").html(
-                '<img id="StaffPicture" height="120" width="110" src="data:image/png;base64,'
-                + $("#HiddenStaffPicture64").val()
-                + '" />'
-            );
-            loadDepartmentDDL(-1);
-        }
 
-        return true;
+            return true;
+        } else
+            return false;
     });
 
     $("#ButtonDelete").click(function () {
@@ -65,11 +39,13 @@
                 url: "api/employee/" + $("#HiddenId").val(),
                 contentType: "application/json; charset=utf-8"
             }).done(function (data) {
-                Message(data, "defaultMsg");
+                $("#LabelStatus").text(data);
                 getEmployees();
             }).fail(function (jqXHR, textStatus, errorThrown) {
-                Message("Error in delete Employee.", "errorMsg");
-                $("#employeeModal").modal("hide");
+                $("#LabelStatus").text("Error in delete Employee.");
+                //$("#employeeModal").modal("hide");
+                $("body").pagecontainer("change", "#mobilepage", { transition: "flip" });
+                // http://stackoverflow.com/questions/19174611/how-to-change-page-in-jquery-mobile-1-4-beta
             });
             return false; // https://support.microsoft.com/en-us/kb/942051
         } else
@@ -78,26 +54,14 @@
 
     $("#ButtonAction").click(function () {
         if ($("#EmployeeForm").valid()) {
-            Message("Data Validated by jQuery!", "successMsg");
+            $("#LabelStatus2").text("Data Validated by jQuery!");
+            $("#LabelStatus2").css("color", "#0F0");
 
-            var reader = new FileReader();
-            var file = $("#fileUpload")[0].files[0];
-            if (file !== undefined) {
-                reader.readAsBinaryString(file);
-
-                reader.onload = function (readerEvt) {
-                    var binaryString = reader.result;
-                    var encodedString = btoa(binaryString);
-                    $("#HiddenStaffPicture64").val(encodedString);
-
-                    doUpdate();
-                }
-            } else {
-                doUpdate();
-            }
+            doUpdate();
         }
         else {
-            Message("Please correct errors.", "errorMsg");
+            $("#LabelStatus2").text("Please correct errors.");
+            $("#LabelStatus2").css("color", "#F00");
         }
         return false;
     });
@@ -115,8 +79,8 @@ function doUpdate() {
         emp.Phoneno = $("#phoneTextbox").val();
         emp.Email = $("#emailTextbox").val();
         emp.DepartmentId = $("#ddlDepts").val();
-        emp.StaffPicture64 = $("#HiddenStaffPicture64").val();
         emp.IsTech = $('#isTechCheck').is(':checked');
+        emp.StaffPicture64 = $("#HiddenStaffPicture64").val();
 
         $.ajax({
             type: "Put",
@@ -126,10 +90,10 @@ function doUpdate() {
             dataType: "json",
             processData: true
         }).done(function (data) {
-            Message(data, "defaultMsg");
+            $("#LabelStatus").text(data);
             getEmployees();
         }).fail(function (jqXHR, textStatus, errorThrown) {
-            Message("Error in update Employee.", "errorMsg");
+            $("#LabelStatus").text("Error in update Employee.");
         });
     } else {
         // Create
@@ -140,8 +104,8 @@ function doUpdate() {
         emp.Phoneno = $("#phoneTextbox").val();
         emp.Email = $("#emailTextbox").val();
         emp.DepartmentId = $("#ddlDepts").val();
-        emp.StaffPicture64 = $("#HiddenStaffPicture64").val();;
         emp.IsTech = $('#isTechCheck').is(':checked');
+        emp.StaffPicture64 = $("#HiddenStaffPicture64");
 
         $.ajax({
             type: "Post",
@@ -151,33 +115,45 @@ function doUpdate() {
             dataType: "json",
             processData: true
         }).done(function (data) {
-            Message(data, "defaultMsg");
+            $("#LabelStatus").text(data);
             getEmployees();
         }).fail(function (jqXHR, textStatus, errorThrown) {
-            Message("Error in create Employee.", "errorMsg");
+            $("#LabelStatus").text("Error in create Employee.");
         });
     }
 }
 
 function buildTable(data) {
-    $("#employeeNames").empty();
+    $('#employeeNames').empty();
     var bg = false;
-    problems = data;
-    div = $("<div id=\"employee\" data-toggle=\"modal\" data-target=\"#employeeModal\" class=\"row trWhite\">");
-    div.html("<div class=\"col-lg-12\" id=\"id0\">...Click here to add</div>");
-    div.appendTo($("#employeeNames"));
+    employees = data; // copy to global var
+    li = $("<li data-role=\"list-divider\" id=\"emphead\" role=\"heading\">" +
+              "<fieldset class=\"ui-grid-c\"style=\"padding:3%;background-color:darkgray;color:white;\">" +
+              "   <div class=\"ui-block-a\" style=\"width:15%;\">&nbsp;</div>" +
+              "   <div class=\"ui-block-b\" style=\"width:20%;\">Title</div>" +
+              "   <div class=\"ui-block-c\" style=\"width:20%;text-align:center;\">First</div>" +
+              "   <div class=\"ui-block-d\" style=\"width:30%;text-align:center;\">Last</div>" +
+              "</fieldset>" +
+           "</li>");
+    li.appendTo($('#employeeNames'));
+
     $.each(data, function (index, emp) {
-        var cls = "rowWhite";
-        bg ? cls = "rowWhite" : cls = "rowLightGrey";
-        bg = !bg;
-        div = $("<div id=\"" + emp.Id + "\" data-toggle=\"modal\" data-target=\"#employeeModal\" class=\"row col-lg-12 " + cls + "\">");
         var empId = emp.Id;
-        div.html("<div class=\"col-xs-4\" id=\"employeeTitle" + empId + "\">" + emp.Title + "</div>"
-            + "<div class=\"col-xs-4\" id=\"employeeFirstname" + empId + "\">" + emp.Firstname + "</div>"
-            + "<div class=\"col-xs-4\" id=\"employeeLastname" + empId + "\">" + emp.Lastname + "</div>"
-        );
-        div.appendTo($("#employeeNames"));
-    });
+        li = $('<li id="' + empId + '" class="ui-li-divider ui-bar-inherit" style="padding:2%">' +
+               '    <fieldset class="ui-grid-d">' +
+               '        <div class="ui-block-a" style="width:15%;">&nbsp;' +
+               '            <img src="data:image/png;base64,' + emp.StaffPicture64 + '" style="max-width:25px; max-height:25px;" />' +
+               '        </div>' +
+               '        <div class="ui-block-b" style="width:15%;">' + emp.Title + '</div>' +
+               '        <div class="ui-block-c" style="width:25%;">' + emp.Firstname + '</div>' +
+               '        <div class="ui-block-d" style="width:30%;">' + emp.Lastname + '</div>' +
+               '        <div class="ui-block-e" style="width:15%;">' +
+               '            <a href="#mobilemodal" data-transition="flip" class="ui-btn-icon-right ui-icon-carat-r" id="' + empId + '">' +
+               '        </div>' +
+               '    </fieldset>' +
+               '</li>');
+        li.appendTo($('#employeeNames'));
+    }); // each
 }
 
 function getEmployees() {
@@ -189,10 +165,11 @@ function getEmployees() {
         processData: true
     }).done(function (data) {
         buildTable(data);
-        Message("Employees Retrived.", "successMsg");
-        $("#employeeModal").modal('hide');
+        $("#LabelStatus").append(" Employees Retrived.");
+        //$("#employeeModal").modal('hide');
+        $("body").pagecontainer("change", "#mobilepage", { transition: "flip" });
     }).fail(function (jqXHR, textStatus, errorThrown) {
-        Message("Error in getting all Employees.", "errorMsg");
+        $("#LabelStatus").append(" Error in getting all Employees.");
     });
 }
 
@@ -212,16 +189,11 @@ function getById(id) {
         $("#phoneTextbox").val(data.Phoneno);
         $("#emailTextbox").val(data.Email);
         loadDepartmentDDL(data.DepartmentId);
-        $("#ImageHolder").html(
-            '<img id="StaffPicture" height="120" width="110" src="data:image/png;base64,'
-            + data.StaffPicture64
-            + '" />'
-        );
         $("#isTechCheck").prop('checked', data.IsTech);
         $("#HiddenStaffPicture64").val(data.StaffPicture64);
-        Message("Employee " + data.Firstname + " retrieved", "successMsg");
+        $("#LabelStatus").text("Employee " + data.Firstname + " retrieved");
     }).fail(function (jqXHR, textStatus, errorThrown) {
-        Message("Error in getting Employee.", "errorMsg");
+        $("#LabelStatus").text("Error in getting Employee.");
     });
 }
 
@@ -231,15 +203,15 @@ function loadDepartmentDDL(empdep) {
         url: "api/departments",
         contentType: "application/json; charset=utf-8"
     }).done(function (data) {
-        html = "<option value=\"notValid\">Select a Value</option>";
+        html = "";
         $("#ddlDepts").empty();
         $.each(data, function () {
             html += "<option value=\"" + this["Id"] + "\">" + this["DepartmentName"] + "</option>";
         });
         $("#ddlDepts").append(html);
-        $("#ddlDepts").val(empdep);
+        $("#ddlDepts").val(empdep).selectmenu('refresh');
     }).fail(function (jqXHR, textStatus, errorThrown) {
-        Message("Error in getting Departments.", "errorMsg");
+        $("#LabelStatus").text("Error in getting Departments.");
     });
 }
 
@@ -250,7 +222,6 @@ $("#EmployeeForm").validate({
         lastnameTextbox: { maxlength: 25, required: true },
         emailTextbox: { maxlength: 40, required: true, email: true },
         phoneTextbox: { maxlength: 15, required: true },
-        ddlDepts: { required: true, notDefault: true }
     },
     ignore: ".ignore, :hidden",
     errorElement: "div",
@@ -270,9 +241,6 @@ $("#EmployeeForm").validate({
         },
         phoneTextbox: {
             required: "Required field.", maxlength: "Must be 1-40 characters.", email: "Needs to be a valid email format"
-        },
-        ddlDepts: {
-            required: "Required field.", notDefault: "Must Select a Value."
         }
     }
 });
