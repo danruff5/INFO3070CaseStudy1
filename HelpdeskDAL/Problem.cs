@@ -3,6 +3,8 @@ using MongoDB.Kennedy;
 
 namespace HelpdeskDAL
 {
+    // A problem object for the different probems that someone can have
+    // with a computer.
     [System.Serializable]
     public class Problem : IMongoEntity
     {

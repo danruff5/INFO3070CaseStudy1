@@ -1,12 +1,12 @@
 ﻿$(function () {
-    $("#LoadButton").click(function () {
+    $("#LoadButton").click(function () { // Clicke the button.
         Message("Loading...", "defaultMsg");
-        $.ajax({
+        $.ajax({ // Load the database
             type: "Delete",
             url: "api/util",
             contentType: "application/json; charset=utf-8"
         }).done(function (data) {
-            if (data === true) {
+            if (data === true) { // Worked vs. not
                 Message("Database loaded", "successMsg");
             } else {
                 Message("Database not loaded", "errorMsg");

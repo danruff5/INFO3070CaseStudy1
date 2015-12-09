@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace HelpdeskViewModels
 {
+    // An employee view model for client side inteaction
     public class EmployeeViewModel : ViewModelUtils
     {
         private EmployeeDAO _dao;
@@ -24,6 +25,7 @@ namespace HelpdeskViewModels
             _dao = new EmployeeDAO();
         }
 
+        // Get and populate this based on the given id
         public void GetById(string id)
         {
             try
@@ -45,6 +47,7 @@ namespace HelpdeskViewModels
             }
         }
 
+        // Update this employee
         public int Update()
         {
             int rowUp = -1;
@@ -69,6 +72,7 @@ namespace HelpdeskViewModels
             return rowUp;
         }
 
+        // Create this employee
         public void Create()
         {
             try
@@ -89,6 +93,7 @@ namespace HelpdeskViewModels
             }
         }
 
+        // Get all employees (only the required fields, not all)
         public List<EmployeeViewModel> GetAll()
         {
             List<EmployeeViewModel> viewModels = new List<EmployeeViewModel>();
@@ -115,6 +120,7 @@ namespace HelpdeskViewModels
             return viewModels;
         }
 
+        // Get all of the tech (only the required fields, not all)
         public List<EmployeeViewModel> GetAllTech()
         {
             List<EmployeeViewModel> viewModels = new List<EmployeeViewModel>();
@@ -140,6 +146,8 @@ namespace HelpdeskViewModels
             }
             return viewModels;
         }
+
+        // Delete this employee
         public bool Delete()
         {
             bool deleteOK = false;

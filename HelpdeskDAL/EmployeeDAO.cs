@@ -7,8 +7,10 @@ using System.Collections.Generic;
 
 namespace HelpdeskDAL
 {
+    // An employee data access object for interacting with the database using employee objects
     public class EmployeeDAO
     {
+        // Get all of the employee information based on the lastname
         public Employee GetBySurname(string name)
         {
             Employee retEmp = null;
@@ -17,9 +19,7 @@ namespace HelpdeskDAL
             try
             {
                 _ctx = new DbContext();
-                var employees = _ctx.Employees;
-                var employee = employees.AsQueryable<Employee>().Where(emp => emp.Lastname == name).FirstOrDefault();
-                retEmp = (Employee)employee;
+                retEmp = _ctx.Employees.FirstOrDefault(e => e.Lastname == name);
             }
             catch (Exception ex)
             {
@@ -29,6 +29,7 @@ namespace HelpdeskDAL
             return retEmp;
         }
 
+        // Get all of the employee information based on the id.
         public Employee GetByID(string id)
         {
             Employee retEmp = null;
@@ -48,6 +49,7 @@ namespace HelpdeskDAL
             return retEmp;
         }
 
+        // Get all of the employees from the database
         public List<Employee> GetAll()
         {
             List<Employee> allEmps = new List<Employee>();
@@ -64,6 +66,7 @@ namespace HelpdeskDAL
             return allEmps;
         }
 
+        // Get all of the tech from the database.
         public List<Employee> GetAllTech()
         {
             List<Employee> techEmps = new List<Employee>();
@@ -81,6 +84,7 @@ namespace HelpdeskDAL
             return techEmps;
         }
 
+        // Update the employee based on the given employee object.
         public int Update(Employee emp)
         {
             int update = -1;
@@ -102,6 +106,7 @@ namespace HelpdeskDAL
             return update;
         }
 
+        // Create a new employee based on the given object
         public string Create (Employee emp)
         {
             string newid = "";
@@ -119,6 +124,7 @@ namespace HelpdeskDAL
             return newid;
         }
 
+        // Delete the employee with the given id.
         public bool Delete(string id)
         {
             bool deleteOk = false;

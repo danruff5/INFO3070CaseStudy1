@@ -7,8 +7,10 @@ using System.Collections.Generic;
 
 namespace HelpdeskDAL
 {
+    // A problem data access object for interacting with the database using problem objects
     public class ProblemDAO
     {
+        // Get the problem based on the name.
         public Problem GetByName(string name)
         {
             Problem retPrb= null;
@@ -17,18 +19,17 @@ namespace HelpdeskDAL
             try
             {
                 _ctx = new DbContext();
-                var problems = _ctx.Problems;
-                var problem = problems.AsQueryable<Problem>().Where(prb => prb.Description == name).FirstOrDefault();
-                retPrb = (Problem)problem;
+                retPrb = _ctx.Problems.FirstOrDefault(p => p.Description == name);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Problem " + ex.Message);
+                DALUtils.ErrorRoutine(ex, "ProblemDAO", "GetByName");
             }
 
             return retPrb;
         }
 
+        // Get the problem based on the id.
         public Problem GetByID(string id)
         {
             Problem retPrb = null;
@@ -42,12 +43,13 @@ namespace HelpdeskDAL
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Problem " + ex.Message);
+                DALUtils.ErrorRoutine(ex, "ProblemDAO", "GetByID");
             }
 
             return retPrb;
         }
 
+        // Get all of the problems from the database.
         public List<Problem> GetAll()
         {
             List<Problem> allPrbs = new List<Problem>();
@@ -64,6 +66,7 @@ namespace HelpdeskDAL
             return allPrbs;
         }
 
+        // Update the problem based on the given problem object
         public int Update(Problem prb)
         {
             int update = -1;
@@ -102,6 +105,7 @@ namespace HelpdeskDAL
             return newid;
         }
 
+        // Delete the problem with the given id
         public bool Delete(string id)
         {
             bool deleteOk = false;

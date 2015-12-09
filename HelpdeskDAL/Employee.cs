@@ -3,6 +3,9 @@ using MongoDB.Kennedy;
 
 namespace HelpdeskDAL
 {
+    // An employee object for storing information about each employee.
+    // Department is an Id from the Department collection. Staff Picture
+    // is a base 64 encoded picture.
     [System.Serializable]
     public class Employee : IMongoEntity
     {

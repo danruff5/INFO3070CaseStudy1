@@ -1,11 +1,11 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="Content/jquery.mobile-1.4.5.min.css" rel="stylesheet" />
     <link href="Content/main.css" rel="stylesheet" />
-    <title>Employee Mobile</title>
+    <title>Call Mobile</title>
 </head>
 <body>
     <div data-role="page" id="mobilepage">
@@ -13,7 +13,7 @@
             <h4 class="text-center">Employees</h4>
         </div>
         <div data-role="main" class="ui-content ui-corner-all">
-            <ul id="employeeNames" data-role="listview" data-inset="true" style="border:solid;border-color:ThreeDDarkShadow;"
+            <ul id="calls" data-role="listview" data-inset="true" style="border:solid;border-color:ThreeDDarkShadow;"
                 class="ui-listview ui-listview-inset ui-corner-all ui-shadow ui-body"></ul>
         </div>
         <div id="footer1" data-role="footer" data-position="fixed">
@@ -28,46 +28,48 @@
             </div>
         </div>
     </div>
+
     <div data-role="page" id="mobilemodal" style="background-color:white;">
         <div data-role="header" style="padding:5%;background-color:darkgray;color:white;font-weight:normal;">
             <a href="#mobilepage" id="empx" data-transition="flip" class="ui-btn-right"
                style="border:none;padding:0;background-color:darkgray;color:white;font-weight:normal;font-size:x-large;">&times;</a>
-            <div style="text-align:center">View Employee Information</div>
+            <div style="text-align:center">View Call Information</div>
         </div>
         <div data-role="main" class="ui-content">
-            <form id="EmployeeForm" name="EmployeeForm" method="post" action="">
+            <form id="CallForm" name="CallForm" method="post" action="">
                 <div class="ui-grid-a">
-                    <div class="ui-block-a" style="padding-top:5%;width:35%">Title:</div>
+                    <div class="ui-block-a" style="padding-top:5%;width:35%">Problem:</div>
                     <div class="ui-block-b" style="width:60%;">
-                        <input type="text" placeholder="enter title" id="titleTextbox" name="titleTextbox" class="form-control" />
+                        <select name="ddlProblems" class="form-control ddl" id="ddlProblems" data-mini="true"></select>
                     </div>
-                    <div class="ui-block-a" style="padding-top:5%;width:35%">First:</div>
+                    <div class="ui-block-a" style="padding-top:5%;width:35%">Employee:</div>
                     <div class="ui-block-b" style="width:60%;">
-                        <input type="text" placeholder="enter first name" id="firstnameTextbox" name="firstnameTextbox" class="form-control" />
+                        <select name="ddlEmployees" class="form-control ddl" id="ddlEmployees" data-mini="true"></select>
                     </div>
-                    <div class="ui-block-a" style="padding-top:5%;width:35%">Surname:</div>
+                    <div class="ui-block-a" style="padding-top:5%;width:35%">Technician:</div>
                     <div class="ui-block-b" style="width:60%;">
-                        <input type="text" placeholder="enter last name" id="lastnameTextbox" name="lastnameTextbox" class="form-control" />
+                        <select name="ddlTechs" class="form-control ddl" id="ddlTechs" data-mini="true"></select>
                     </div>
-                    <div class="ui-block-a" style="padding-top:5%;width:35%">Phone:</div>
+                    <div class="ui-block-a" style="padding-top:5%;width:35%">Date Opened:</div>
                     <div class="ui-block-b" style="width:60%;">
-                        <input type="text" placeholder="enter phone" id="phoneTextbox" name="phoneTextbox" class="form-control" />
+                        <div id="DateOpenedLabel" name="DateOpenedLabel"></div>
                     </div>
-                    <div class="ui-block-a" style="padding-top:5%;width:35%">Email:</div>
+                    <div class="ui-block-a" style="padding-top:5%;width:35%">Date Closed:</div>
                     <div class="ui-block-b" style="width:60%;">
-                        <input type="text" placeholder="enter email" id="emailTextbox" name="emailTextbox" class="form-control" />
+                        <div id="DateClosedLabel" name="DateClosedLabel"></div>
                     </div>
-                    <div class="ui-block-a" style="padding-top:5%;width:35%">Is Technician:</div>
-                    <div class="ui-block-b" style="font-size:x-large;padding-top:12px;">
-                        <input style="left:-2%;" type="checkbox" id="isTechCheck" name="isTechCheck" class="form-control" />
-                    </div>
-                    <div class="ui-block-a" style="padding-top:5%;width:35%">Department:</div>
+                    <div class="ui-block-a" style="padding-top:5%;width:35%">Close Call:</div>
                     <div class="ui-block-b" style="width:60%;">
-                        <select name="ddlDepts" class="form-control ddl" id="ddlDepts" data-mini="true"></select>
+                        <input type="checkbox" class="form-control" id="CloseCallCheck" name="CloseCallCheck" />
+                    </div>
+                    <div class="ui-block-a" style="padding-top:5%;width:35%">Notes:</div>
+                    <div class="ui-block-b" style="width:60%;">
+                        <textarea type="text" class="form-control" id="NotesTextArea" name="NotesTextArea"></textarea>
                     </div>
                     <input type="hidden" id="HiddenId" />
                     <input type="hidden" id="HiddenEntity" />
-                    <input type="hidden" id="HiddenStaffPicture64" />
+                    <input type="hidden" id="HiddenDateOpened" />
+                    <input type="hidden" id="HiddenDateClosed" />
                 </div>
             </form>
         </div>
@@ -77,9 +79,10 @@
             <span id="LabelStatus2"></span>
         </div>
     </div>
+
     <script src="Scripts/jquery-1.9.1.min.js"></script>
     <script src="Scripts/jquery.mobile-1.4.5.min.js"></script>
     <script src="Scripts/jquery.validate.min.js"></script>
-    <script src="Scripts/m.Employee.js"></script>
+    <script src="Scripts/m.Call.js"></script>
 </body>
 </html>

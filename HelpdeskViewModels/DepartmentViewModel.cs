@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace HelpdeskViewModels
 {
+    // A department view model for client side interaction
     public class DepartmentViewModel : ViewModelUtils
     {
         private DepartmentDAO _dao;
@@ -17,6 +18,7 @@ namespace HelpdeskViewModels
             _dao = new DepartmentDAO();
         }
 
+        // Get and populate this based in given id.
         public void GetById(string id)
         {
             try
@@ -31,6 +33,7 @@ namespace HelpdeskViewModels
             }
         }
 
+        // Update this department
         public int Update()
         {
             int rowUp = -1;
@@ -48,6 +51,7 @@ namespace HelpdeskViewModels
             return rowUp;
         }
 
+        // Create this department
         public void Create()
         {
             try
@@ -61,6 +65,7 @@ namespace HelpdeskViewModels
             }
         }
 
+        // Get all departments
         public List<DepartmentViewModel> GetAll()
         {
             List<DepartmentViewModel> viewModels = new List<DepartmentViewModel>();
@@ -84,6 +89,7 @@ namespace HelpdeskViewModels
             return viewModels;
         }
 
+        // Delete thos department
         public bool Delete()
         {
             bool deleteOK = false;

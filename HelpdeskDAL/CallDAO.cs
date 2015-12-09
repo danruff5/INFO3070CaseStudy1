@@ -7,8 +7,10 @@ using System.Collections.Generic;
 
 namespace HelpdeskDAL
 {
+    // A call data acces object for interacting with the database using call objects.
     public class CallDAO
     { 
+        // Get all of the call information based on the object id
         public Call GetByID(string id)
         {
             Call retCall = null;
@@ -28,6 +30,7 @@ namespace HelpdeskDAL
             return retCall;
         }
 
+        // Get all of the calls from the database
         public List<Call> GetAll()
         {
             List<Call> allCalls = new List<Call>();
@@ -44,6 +47,7 @@ namespace HelpdeskDAL
             return allCalls;
         }
 
+        // Update the call based on the given call object
         public int Update(Call call)
         {
             int update = -1;
@@ -65,6 +69,7 @@ namespace HelpdeskDAL
             return update;
         }
 
+        // Create a new call based on the given call object
         public string Create (Call call)
         {
             string newid = "";
@@ -82,6 +87,7 @@ namespace HelpdeskDAL
             return newid;
         }
 
+        // Delete the call with the given id
         public bool Delete(string id)
         {
             bool deleteOk = false;

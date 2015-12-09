@@ -44,10 +44,11 @@
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 $("#LabelStatus").text("Error in delete Employee.");
                 //$("#employeeModal").modal("hide");
-                $("body").pagecontainer("change", "#mobilepage", { transition: "flip" });
+                $("body").pagecontainer("change", "#mobilepage", { transition: "flip" }); // Change the page.
                 // http://stackoverflow.com/questions/19174611/how-to-change-page-in-jquery-mobile-1-4-beta
             });
             return false; // https://support.microsoft.com/en-us/kb/942051
+            // Must be false to stop the form from POSTing.
         } else
             return true;
     });
@@ -135,13 +136,13 @@ function buildTable(data) {
               "   <div class=\"ui-block-d\" style=\"width:30%;text-align:center;\">Last</div>" +
               "</fieldset>" +
            "</li>");
-    li.appendTo($('#employeeNames'));
+    li.appendTo($('#employeeNames')); // Load the header.
 
-    $.each(data, function (index, emp) {
+    $.each(data, function (index, emp) { // Each employee
         var empId = emp.Id;
         li = $('<li id="' + empId + '" class="ui-li-divider ui-bar-inherit" style="padding:2%">' +
                '    <fieldset class="ui-grid-d">' +
-               '        <div class="ui-block-a" style="width:15%;">&nbsp;' +
+               '        <div class="ui-block-a" style="width:15%;">&nbsp;' + // special picture 
                '            <img src="data:image/png;base64,' + emp.StaffPicture64 + '" style="max-width:25px; max-height:25px;" />' +
                '        </div>' +
                '        <div class="ui-block-b" style="width:15%;">' + emp.Title + '</div>' +
@@ -168,6 +169,7 @@ function getEmployees() {
         $("#LabelStatus").append(" Employees Retrived.");
         //$("#employeeModal").modal('hide');
         $("body").pagecontainer("change", "#mobilepage", { transition: "flip" });
+        // Change page.
     }).fail(function (jqXHR, textStatus, errorThrown) {
         $("#LabelStatus").append(" Error in getting all Employees.");
     });
@@ -180,7 +182,7 @@ function getById(id) {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         processData: true
-    }).done(function (data) {
+    }).done(function (data) { // Load the employee information
         $("#HiddenId").val(data.Id);
         $("#HiddenEntity").val(data.Entity64);
         $("#titleTextbox").val(data.Title);
@@ -197,7 +199,7 @@ function getById(id) {
     });
 }
 
-function loadDepartmentDDL(empdep) {
+function loadDepartmentDDL(empdep) { // Get the departments and load the right one.
     $.ajax({
         type: "Get",
         url: "api/departments",
@@ -215,7 +217,7 @@ function loadDepartmentDDL(empdep) {
     });
 }
 
-$("#EmployeeForm").validate({
+$("#EmployeeForm").validate({ // Validation rules.
     rules: {
         titleTextbox: { maxlength: 4, required: true, validTitle: true },
         firstnameTextbox: { maxlength: 25, required: true },

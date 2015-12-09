@@ -1,13 +1,10 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Kennedy;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HelpdeskDAL
 {
+    // Call Object to model calls. With person with problem, the tech fixing
+    // the problem, and the problem, as Id's.
     [System.Serializable]
     public class Call : IMongoEntity
     {

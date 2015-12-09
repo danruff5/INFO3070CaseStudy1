@@ -320,13 +320,14 @@
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="index.html" />
     <Content Include="include.html" />
+    <Content Include="m.call.html" />
     <Content Include="m.employee.html" />
-    <Content Include="m.include.html" />
     <Content Include="problem.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Call.js" />
     <Content Include="Scripts\Department.js" />
+    <Content Include="Scripts\m.Call.js" />
     <Content Include="Scripts\m.Employee.js" />
     <Content Include="Scripts\jquery.mobile-1.4.5.js" />
     <Content Include="Scripts\jquery.mobile-1.4.5.min.js" />

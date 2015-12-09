@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace HelpdeskViewModels
 {
+    // A call view model fo client side interaction.
     public class CallViewModel : ViewModelUtils
     {
         private CallDAO _dao;
@@ -26,6 +27,7 @@ namespace HelpdeskViewModels
             _dao = new CallDAO();
         }
 
+        // Get and populate this based on the id.
         public void GetById(string id)
         {
             try
@@ -46,6 +48,7 @@ namespace HelpdeskViewModels
             }
         }
 
+        // Update this call.
         public int Update()
         {
             int rowUp = -1;
@@ -72,6 +75,7 @@ namespace HelpdeskViewModels
             return rowUp;
         }
 
+        // Create this call.
         public void Create()
         {
             try
@@ -91,6 +95,7 @@ namespace HelpdeskViewModels
             }
         }
 
+        // Get all calls.
         public List<CallViewModel> GetAll()
         {
             List<CallViewModel> viewModels = new List<CallViewModel>();
@@ -99,6 +104,10 @@ namespace HelpdeskViewModels
             {
                 List<Call> calls = _dao.GetAll();
 
+                // Have to get the employee and the problem based in the id to have
+                // text to show the user. They are stored in DisplayName and DisplayProblem.
+                // Implemented in the view model because its the view models job to make the
+                // database useable for the client side.
                 foreach (Call c in calls)
                 {
                     // Return only fields for display, subdequent get will other fields
@@ -110,7 +119,7 @@ namespace HelpdeskViewModels
 
                     EmployeeViewModel emp = new EmployeeViewModel();
                     emp.GetById(c.EmployeeId.ToString());
-                    viewModel.DisplayName = emp.Firstname;
+                    viewModel.DisplayName = emp.Firstname + " " + emp.Lastname;
 
                     ProblemViewModel prb = new ProblemViewModel();
                     prb.GetById(c.ProblemId.ToString());
@@ -125,6 +134,7 @@ namespace HelpdeskViewModels
             return viewModels;
         }
 
+        // Delete this call
         public bool Delete()
         {
             bool deleteOK = false;

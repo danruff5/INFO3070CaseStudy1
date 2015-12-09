@@ -1,15 +1,17 @@
 ﻿$(function () {
-    $.validator.addMethod("validTitle", function (value, element) { // custom rule
+    // Custom rule for employee title.
+    $.validator.addMethod("validTitle", function (value, element) {
         return this.optional(element) || (value == "Mr." || value == "Ms." || value == "Mrs." || value == "Dr.");
     }, "");
 
+    // Custome rule for non default value for dropdowns.
     $.validator.addMethod("notDefault", function (value, element) { // custom rule
         return this.optional(element) || (value != "notValid");
     }, "");
 
-    getEmployees();
+    getEmployees(); // Get all the employees and build table.
 
-    $("#employeeNames").click(function (e) {
+    $("#employeeNames").click(function (e) { // Clicked on table.
         var validator = $('#EmployeeForm').validate();
         validator.resetForm();
 
@@ -32,7 +34,7 @@
 
             $("#ButtonAction").prop("value", "Update");
             $("#ButtonDelete").show();
-        } else { // New employee
+        } else { // New employee, set all to default.
             $("#ButtonDelete").hide();
             $("#ButtonAction").prop("value", "Add");
             $("#ButtonAction").prop("disabled", false);
@@ -45,6 +47,7 @@
             $("#lastnameTextbox").val("");
             $("#phoneTextbox").val("");
             $("#emailTextbox").val("");
+            // Use a default picture stored in hidden html input.
             $("#HiddenStaffPicture64").val($("#HiddenDefaultPicture64").val());
             $("#ImageHolder").html(
                 '<img id="StaffPicture" height="120" width="110" src="data:image/png;base64,'
@@ -72,17 +75,19 @@
                 $("#employeeModal").modal("hide");
             });
             return false; // https://support.microsoft.com/en-us/kb/942051
+            // Causing the form to post after the ajax call.
         } else
             return true;
     });
 
     $("#ButtonAction").click(function () {
-        if ($("#EmployeeForm").valid()) {
+        if ($("#EmployeeForm").valid()) { // Check the form.
             Message("Data Validated by jQuery!", "successMsg");
 
             var reader = new FileReader();
             var file = $("#fileUpload")[0].files[0];
-            if (file !== undefined) {
+            if (file !== undefined) { // If the user gave a file.
+                                      // convert it and save it in the hidden input
                 reader.readAsBinaryString(file);
 
                 reader.onload = function (readerEvt) {
@@ -90,10 +95,10 @@
                     var encodedString = btoa(binaryString);
                     $("#HiddenStaffPicture64").val(encodedString);
 
-                    doUpdate();
+                    doUpdate(); // Update or Create
                 }
             } else {
-                doUpdate();
+                doUpdate(); // Update or Create without changing picture
             }
         }
         else {
@@ -101,12 +106,12 @@
         }
         return false;
     });
-});
+}); // jQuery main function
 
 function doUpdate() {
     if ($("#ButtonAction").val() === "Update") {
         // Update
-        emp = new Object();
+        emp = new Object(); // Create employee object.
         emp.Id = $("#HiddenId").val();
         emp.Entity64 = $("#HiddenEntity").val();
         emp.Title = $("#titleTextbox").val();
@@ -133,7 +138,7 @@ function doUpdate() {
         });
     } else {
         // Create
-        emp = new Object();
+        emp = new Object(); // Create employee object.
         emp.Title = $("#titleTextbox").val();
         emp.Firstname = $("#firstnameTextbox").val();
         emp.Lastname = $("#lastnameTextbox").val();
@@ -143,7 +148,7 @@ function doUpdate() {
         emp.StaffPicture64 = $("#HiddenStaffPicture64").val();;
         emp.IsTech = $('#isTechCheck').is(':checked');
 
-        $.ajax({
+        $.ajax({ // Send it!
             type: "Post",
             url: "api/employee",
             data: JSON.stringify(emp),
@@ -159,14 +164,14 @@ function doUpdate() {
     }
 }
 
-function buildTable(data) {
+function buildTable(data) { // Create the Employee table.
     $("#employeeNames").empty();
     var bg = false;
     problems = data;
     div = $("<div id=\"employee\" data-toggle=\"modal\" data-target=\"#employeeModal\" class=\"row trWhite\">");
     div.html("<div class=\"col-lg-12\" id=\"id0\">...Click here to add</div>");
     div.appendTo($("#employeeNames"));
-    $.each(data, function (index, emp) {
+    $.each(data, function (index, emp) { // Each employee
         var cls = "rowWhite";
         bg ? cls = "rowWhite" : cls = "rowLightGrey";
         bg = !bg;
@@ -180,7 +185,7 @@ function buildTable(data) {
     });
 }
 
-function getEmployees() {
+function getEmployees() { // Get all employees and build that table.
     return $.ajax({ // Return the promise that $.ajax returns (deferred object)
         type: "Get",
         url: "api/employees",
@@ -196,7 +201,7 @@ function getEmployees() {
     });
 }
 
-function getById(id) {
+function getById(id) { // Get a single employee.
     var data = $.ajax({
         type: "Get",
         url: "api/employee/" + id,
@@ -204,6 +209,7 @@ function getById(id) {
         dataType: "json",
         processData: true
     }).done(function (data) {
+        // Set all of fields from the employee.
         $("#HiddenId").val(data.Id);
         $("#HiddenEntity").val(data.Entity64);
         $("#titleTextbox").val(data.Title);
@@ -212,26 +218,26 @@ function getById(id) {
         $("#phoneTextbox").val(data.Phoneno);
         $("#emailTextbox").val(data.Email);
         loadDepartmentDDL(data.DepartmentId);
-        $("#ImageHolder").html(
+        $("#ImageHolder").html( // Special picture format.
             '<img id="StaffPicture" height="120" width="110" src="data:image/png;base64,'
             + data.StaffPicture64
             + '" />'
         );
         $("#isTechCheck").prop('checked', data.IsTech);
-        $("#HiddenStaffPicture64").val(data.StaffPicture64);
+        $("#HiddenStaffPicture64").val(data.StaffPicture64); // Save the base 64 version
         Message("Employee " + data.Firstname + " retrieved", "successMsg");
     }).fail(function (jqXHR, textStatus, errorThrown) {
         Message("Error in getting Employee.", "errorMsg");
     });
 }
 
-function loadDepartmentDDL(empdep) {
+function loadDepartmentDDL(empdep) { // Load the department drop down list.
     $.ajax({
         type: "Get",
         url: "api/departments",
         contentType: "application/json; charset=utf-8"
     }).done(function (data) {
-        html = "<option value=\"notValid\">Select a Value</option>";
+        html = "<option value=\"notValid\">Select a Value</option>"; // Default option
         $("#ddlDepts").empty();
         $.each(data, function () {
             html += "<option value=\"" + this["Id"] + "\">" + this["DepartmentName"] + "</option>";
@@ -243,7 +249,7 @@ function loadDepartmentDDL(empdep) {
     });
 }
 
-$("#EmployeeForm").validate({
+$("#EmployeeForm").validate({ // Validation rules.
     rules: {
         titleTextbox: { maxlength: 4, required: true, validTitle: true },
         firstnameTextbox: { maxlength: 25, required: true },

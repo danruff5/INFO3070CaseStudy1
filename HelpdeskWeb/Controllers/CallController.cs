@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Web.Http;
 
+// Controllers for interacting with the call
 namespace HelpdeskWeb.Controllers
 {
+    // Get all calls
     public class CallController : ApiController
     {
         [Route("api/calls")]
@@ -22,6 +24,7 @@ namespace HelpdeskWeb.Controllers
             }
         }
 
+        // Get a call from an id.
         [Route("api/call/{id}")]
         public IHttpActionResult Get(string id)
         {
@@ -37,6 +40,7 @@ namespace HelpdeskWeb.Controllers
             }
         }
 
+        // Delete the call from an id.
         [Route("api/call/{id}")]
         public IHttpActionResult Delete(string id)
         {
@@ -55,6 +59,7 @@ namespace HelpdeskWeb.Controllers
             }
         }
 
+        // Update a call from a call view model.
         [Route("api/call")]
         public IHttpActionResult Put(CallViewModel call)
         {
@@ -79,6 +84,7 @@ namespace HelpdeskWeb.Controllers
             }
         }
 
+        // Cerate a call from a call view model
         [Route("api/call")]
         public IHttpActionResult Post(CallViewModel call)
         {

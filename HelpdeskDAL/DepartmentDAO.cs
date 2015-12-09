@@ -7,8 +7,10 @@ using System.Collections.Generic;
 
 namespace HelpdeskDAL
 {
+    // A department data access object for interacting with the database using department objects
     public class DepartmentDAO
     {
+        // Get the department by the name.
         public Department GetByName(string name)
         {
             Department retDep = null;
@@ -17,18 +19,17 @@ namespace HelpdeskDAL
             try
             {
                 _ctx = new DbContext();
-                var departments = _ctx.Departments;
-                var department = departments.AsQueryable<Department>().Where(dep => dep.DepartmentName == name).FirstOrDefault();
-                retDep = (Department)department;
+                retDep = _ctx.Departments.FirstOrDefault(d => d.DepartmentName == name);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Problem " + ex.Message);
+                DALUtils.ErrorRoutine(ex, "DepartmentDAO", "GetbyName");
             }
 
             return retDep;
         }
 
+        // Get the department by the id.
         public Department GetByID(string id)
         {
             Department retDep = null;
@@ -42,12 +43,13 @@ namespace HelpdeskDAL
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Problem " + ex.Message);
+                DALUtils.ErrorRoutine(ex, "DepartmentDAO", "GetById");
             }
 
             return retDep;
         }
 
+        // Get all of the departments.
         public List<Department> GetAll()
         {
             List<Department> allDeps = new List<Department>();
@@ -64,6 +66,7 @@ namespace HelpdeskDAL
             return allDeps;
         }
 
+        // Update the department based on the given department object
         public int Update(Department dep)
         {
             int update = -1;
@@ -85,6 +88,7 @@ namespace HelpdeskDAL
             return update;
         }
 
+        // Create a new department based on the given department object
         public string Create (Department dep)
         {
             string newid = "";
@@ -102,6 +106,7 @@ namespace HelpdeskDAL
             return newid;
         }
 
+        // Delete the department with the given id.
         public bool Delete(string id)
         {
             bool deleteOk = false;
